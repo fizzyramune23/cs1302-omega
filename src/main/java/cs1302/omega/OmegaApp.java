@@ -51,6 +51,8 @@ public class OmegaApp extends Application {
 
     VBox vbox;
 
+
+
     //menu
     HBox menu;
     public Button exit;
@@ -80,6 +82,11 @@ public class OmegaApp extends Application {
     private InputStreamReader reader;
     private String term;
 
+    //JsonElement je = JsonParser.parseReader(reader1);
+    //JsonObject root = je.getAsJsonObject();
+
+    //String pokeAbs = "";
+
     //apikey
     final String apiKey1 = "988de148-516b-4a9f-93e3-5cd8094e6051";
 
@@ -103,14 +110,11 @@ public class OmegaApp extends Application {
     /** {@inheritDoc} */
     @Override
     public void start(Stage stage) {
-
         vbox = new VBox();
-
         //exit
         menu = new HBox(10);
         exit = new Button("Exit");
         menu.getChildren().add(exit);
-
         //search bar
         toolBar = new HBox(10);
         searchQ = new Label("Search Pokemon:");
@@ -122,10 +126,8 @@ public class OmegaApp extends Application {
         HBox.setHgrow(update, Priority.ALWAYS);
         update.setMaxWidth(Double.MAX_VALUE);
         toolBar.getChildren().addAll(searchQ,searchField,update);
-
         pokeInfo = new HBox(10);
         pokeLabels = new HBox(100);
-
         //stats
         stats = new Label("Stats:");
         HBox.setHgrow(stats, Priority.ALWAYS);
@@ -133,7 +135,6 @@ public class OmegaApp extends Application {
         pokeStats = new TextArea();
         pokeStats.setWrapText(true);
         HBox.setHgrow(pokeStats, Priority.ALWAYS);
-
         //cards
         books = new Label("Pokemon Card Information:");
         HBox.setHgrow(books, Priority.ALWAYS);
@@ -141,15 +142,10 @@ public class OmegaApp extends Application {
         pokeBooks = new TextArea();
         pokeBooks.setWrapText(true);
         HBox.setHgrow(pokeBooks, Priority.ALWAYS);
-
-
-
         pokeInfo.getChildren().addAll(pokeStats,pokeBooks);
         pokeLabels.getChildren().addAll(stats,books);
         vbox.getChildren().addAll(menu,toolBar,pokeLabels,pokeInfo);
-
         EventHandler<MouseEvent> handler = new EventHandler<MouseEvent>() {
-
             @Override
             public void handle(MouseEvent e) {
                 if (e.getSource() == exit) {
@@ -169,95 +165,14 @@ public class OmegaApp extends Application {
                     } catch (MalformedURLException m) {
                         System.err.println("Malformed URL");
                     }
-                    /*
-                    JsonElement je = JsonParser.parseReader(reader1);
-                    JsonObject root = je.getAsJsonObject();
-
-                    //abilities
-                    JsonArray abilities = root.getAsJsonArray("abilities");
-                    int numAbilities = abilities.size();
-                    String[] pAbilities = new String[numAbilities];
-                    for (int i = 0; i < numAbilities; i++) {
-                        JsonObject ability = abilities.get(i).getAsJsonObject();
-                        JsonObject abName = ability.getAsJsonObject("ability");
-                        JsonElement name = abName.get("name");
-                        String abilityName = gson.fromJson(name,String.class);
-                        pAbilities[i] = (i + 1) + ". " + abilityName;
-                    }
-                    String pokeAbs = "Abilities:\n\t";
-                    for (int j = 0; j < numAbilities; j++) {
-                        if (j < numAbilities - 1) {
-                            pokeAbs += (pAbilities[j] + "\n\t");
-                        } else {
-                            pokeAbs += (pAbilities[j] + "\n");
-                        }
-                    }
-
-                    //height
-                    JsonElement height = root.get("height");
-                    int pokHeight = height.getAsInt();
-                    pokeAbs += "Height:\n\t" + pokHeight + " decimeters\n";
-
-                    //weight
-                    JsonElement weight = root.get("weight");
-                    int pokWeight = weight.getAsInt();
-                    pokeAbs += "Weight:\n\t" + pokWeight + " hectograms\n";
-
-                    //types
-                    JsonArray types = root.getAsJsonArray("types");
-                    int numTypes = types.size();
-                    String[] pTypes = new String[numTypes];
-                    for(int l = 0; l < numTypes; l++) {
-                        JsonObject type = types.get(l).getAsJsonObject();
-                        JsonObject typeName = type.getAsJsonObject("type");
-                        JsonElement tName = typeName.get("name");
-                        String typeNames = gson.fromJson(tName,String.class);
-                        pTypes[l] = (l + 1) + ". " + typeNames;
-                    }
-                    pokeAbs += "Types:\n\t";
-                    for (int k = 0; k < numTypes; k++) {
-                        if (k < numTypes - 1) {
-                            pokeAbs += (pTypes[k] + "\n\t");
-                        } else {
-                            pokeAbs += (pTypes[k] + "\n");
-                        }
-                    }
-
-                    //moves
-                    JsonArray moves = root.getAsJsonArray("moves");
-                    int numMoves = moves.size();
-                    String[] pMoves = new String[numMoves];
-                    for(int m = 0; m < numMoves; m++) {
-                        JsonObject move = moves.get(m).getAsJsonObject();
-                        JsonObject moveName = move.getAsJsonObject("move");
-                        JsonElement mName = moveName.get("name");
-                        String moveNames = gson.fromJson(mName,String.class);
-                        pMoves[m] = (m + 1) + ". " + moveNames;
-                    }
-                    pokeAbs += "Moves:\n\t";
-                    for (int t = 0; t < numMoves; t++) {
-                        if (t < numMoves - 1) {
-                            pokeAbs += (pMoves[t] + "\n\t");
-                        } else {
-                            pokeAbs += (pMoves[t] + "\n");
-                        }
-                    }
-
-                    pokeStats.setText(pokeAbs);
-                    */
                     getStats();
                     getCards();
-
                 }
             }
-
         };
-
         exit.setOnMouseClicked(handler);
         update.setOnMouseClicked(handler);
-
         Scene scene = new Scene(vbox);
-
         stage.setMaxWidth(DEF_WIDTH);
         stage.setMaxHeight(DEF_HEIGHT);
         stage.setTitle("PokeDex!");
@@ -266,6 +181,9 @@ public class OmegaApp extends Application {
         stage.show();
     } // start
 
+    /**
+     * This method gets the Card Info.
+     */
     public void getCards() {
         sUrl2 = pokeCardEnd + "&q=name:" + term;
         try {
@@ -324,10 +242,12 @@ public class OmegaApp extends Application {
 
     }
 
+    /**
+     * This method gets the pokemon stats.
+     */
     public void getStats() {
         JsonElement je = JsonParser.parseReader(reader1);
         JsonObject root = je.getAsJsonObject();
-
         //abilities
         JsonArray abilities = root.getAsJsonArray("abilities");
         int numAbilities = abilities.size();
@@ -347,22 +267,20 @@ public class OmegaApp extends Application {
                 pokeAbs += (pAbilities[j] + "\n");
             }
         }
-
+        //getAbilities();
         //height
         JsonElement height = root.get("height");
         int pokHeight = height.getAsInt();
         pokeAbs += "Height:\n\t" + pokHeight + " decimeters\n";
-
         //weight
         JsonElement weight = root.get("weight");
         int pokWeight = weight.getAsInt();
         pokeAbs += "Weight:\n\t" + pokWeight + " hectograms\n";
-
         //types
         JsonArray types = root.getAsJsonArray("types");
         int numTypes = types.size();
         String[] pTypes = new String[numTypes];
-        for(int l = 0; l < numTypes; l++) {
+        for (int l = 0; l < numTypes; l++) {
             JsonObject type = types.get(l).getAsJsonObject();
             JsonObject typeName = type.getAsJsonObject("type");
             JsonElement tName = typeName.get("name");
@@ -377,12 +295,11 @@ public class OmegaApp extends Application {
                 pokeAbs += (pTypes[k] + "\n");
             }
         }
-
         //moves
         JsonArray moves = root.getAsJsonArray("moves");
         int numMoves = moves.size();
         String[] pMoves = new String[numMoves];
-        for(int m = 0; m < numMoves; m++) {
+        for (int m = 0; m < numMoves; m++) {
             JsonObject move = moves.get(m).getAsJsonObject();
             JsonObject moveName = move.getAsJsonObject("move");
             JsonElement mName = moveName.get("name");
@@ -397,9 +314,30 @@ public class OmegaApp extends Application {
                 pokeAbs += (pMoves[t] + "\n");
             }
         }
-
         pokeStats.setText(pokeAbs);
-
     }
+    /*
+    private void getAbilities() {
+        //abilities
+        JsonArray abilities = root.getAsJsonArray("abilities");
+        int numAbilities = abilities.size();
+        String[] pAbilities = new String[numAbilities];
+        for (int i = 0; i < numAbilities; i++) {
+            JsonObject ability = abilities.get(i).getAsJsonObject();
+            JsonObject abName = ability.getAsJsonObject("ability");
+            JsonElement name = abName.get("name");
+            String abilityName = gson.fromJson(name,String.class);
+            pAbilities[i] = (i + 1) + ". " + abilityName;
+        }
+        String pokeAbs = "Abilities:\n\t";
+        for (int j = 0; j < numAbilities; j++) {
+            if (j < numAbilities - 1) {
+                pokeAbs += (pAbilities[j] + "\n\t");
+            } else {
+                pokeAbs += (pAbilities[j] + "\n");
+            }
+        }
+    }
+    */
 
 } // OmegaApp

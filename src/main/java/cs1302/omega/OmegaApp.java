@@ -45,7 +45,9 @@ import com.google.gson.Gson;
 import javafx.util.Pair;
 
 /**
- * REPLACE WITH NON-SHOUTING DESCRIPTION OF YOUR APP.
+ * This is the class for my PokeDex app. It can provide information on any pokemon
+ * and it can also provide information on all cards associated with the pokemon that
+ * is searched.
  */
 public class OmegaApp extends Application {
 
@@ -316,28 +318,5 @@ public class OmegaApp extends Application {
         }
         pokeStats.setText(pokeAbs);
     }
-    /*
-    private void getAbilities() {
-        //abilities
-        JsonArray abilities = root.getAsJsonArray("abilities");
-        int numAbilities = abilities.size();
-        String[] pAbilities = new String[numAbilities];
-        for (int i = 0; i < numAbilities; i++) {
-            JsonObject ability = abilities.get(i).getAsJsonObject();
-            JsonObject abName = ability.getAsJsonObject("ability");
-            JsonElement name = abName.get("name");
-            String abilityName = gson.fromJson(name,String.class);
-            pAbilities[i] = (i + 1) + ". " + abilityName;
-        }
-        String pokeAbs = "Abilities:\n\t";
-        for (int j = 0; j < numAbilities; j++) {
-            if (j < numAbilities - 1) {
-                pokeAbs += (pAbilities[j] + "\n\t");
-            } else {
-                pokeAbs += (pAbilities[j] + "\n");
-            }
-        }
-    }
-    */
 
 } // OmegaApp
